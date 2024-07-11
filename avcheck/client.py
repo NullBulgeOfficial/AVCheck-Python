@@ -1,5 +1,5 @@
 import requests
-from .exceptions import AvCheckException, ApiKeyMissingException, InvalidResponseException
+from .exceptions import AvCheckException, ApiKeyMissingException, InvalidResponseException, InvalidInputException
 
 class AvCheckClient:
     def __init__(self, api_key, base_url="http://avcheck.net/vhm/api/v1"):
@@ -29,6 +29,9 @@ class AvCheckClient:
         return self._process_service_info(response)
 
     def get_task_data(self, task_id, crc=None):
+        if not task_id:
+            raise InvalidInputException("Task ID is required")
+            
         endpoint = f"check/get/{task_id}/"
         if crc:
             endpoint += f"{crc}/"
@@ -36,6 +39,13 @@ class AvCheckClient:
         return self._process_task_data(response)
 
     def create_new_task(self, task_type="file", file_path=None, url=None, engines=None, response_type="on_close"):
+        if task_type not in ["file", "domain"]:
+            raise InvalidInputException("Invalid task type. Must be 'file' or 'domain'")
+        if task_type == "file" and not file_path:
+            raise InvalidInputException("File path is required for 'file' task type")
+        if task_type == "domain" and not url:
+            raise InvalidInputException("URL is required for 'domain' task type")
+
         data = {
             'task_type': task_type,
             'response_type': response_type

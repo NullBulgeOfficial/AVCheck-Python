@@ -10,7 +10,7 @@ pip install avcheck
 
 ## Usage
 ```python
-from avcheck import AvCheckClient, AvCheckException
+from avcheck import AvCheckClient, AvCheckException, InvalidInputException
 
 api_key = "your_api_key"
 client = AvCheckClient(api_key)
@@ -26,6 +26,8 @@ except AvCheckException as e:
 try:
     task_data = client.get_task_data("task_id")
     print(task_data)
+except InvalidInputException as e:
+    print(f"Invalid Input: {e}")
 except AvCheckException as e:
     print(f"Error: {e}")
 
@@ -33,6 +35,8 @@ except AvCheckException as e:
 try:
     task_id = client.create_new_task(file_path="path/to/file")
     print(f"New task created with ID: {task_id}")
+except InvalidInputException as e:
+    print(f"Invalid Input: {e}")
 except AvCheckException as e:
     print(f"Error: {e}")
 
@@ -63,18 +67,44 @@ try:
     print(array_data)
 except AvCheckException as e:
     print(f"Error: {e}")
+
+# Get all engines
+try:
+    all_engines = client.get_all_engines(service_info)
+    print(all_engines)
+except AvCheckException as e:
+    print(f"Error: {e}")
+
+# Get engine by name
+try:
+    engine_details = client.get_engine_by_name(service_info, "avast")
+    print(engine_details)
+except AvCheckException as e:
+    print(f"Error: {e}")
+
+# Get engines by type
+try:
+    type_3_engines = client.get_engines_by_type(service_info, 3)
+    print(type_3_engines)
+except AvCheckException as e:
+    print(f"Error: {e}")
+
+# Check if an engine is available
+try:
+    is_available = client.is_engine_available(service_info, "avast")
+    print(is_available)
+except AvCheckException as e:
+    print(f"Error: {e}")
+
+# Get engine names
+try:
+    engine_names = client.get_engine_names(service_info)
+    print(engine_names['shortname'])
+    print(engine_names['longname'])
+except AvCheckException as e:
+    print(f"Error: {e}")
 ```
 
 ## License
 MIT License
-```
-
-The `README.md` file is updated to include documentation for the new methods.
-
-### Final Step
-Compile the package into a `.whl` file for distribution.
-
-Run the following command to build the wheel file:
-```sh
-python setup.py bdist_wheel
 ```
