@@ -11,8 +11,9 @@ setup(
     description="Python library to interact with AvCheck API",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="NullBulge",
+    author_email="contact@nullbulge.se",
+    url="nullbulge.se",
     packages=find_packages(),
     install_requires=[
         "requests",
