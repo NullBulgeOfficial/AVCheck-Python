@@ -13,7 +13,11 @@ setup(
     long_description_content_type="text/markdown",
     author="NullBulge",
     author_email="contact@nullbulge.se",
-    url="nullbulge.se",
+    url="https://github.com/NullBulgeOfficial/AVCheck-Python",
+    project_urls={
+        "Bug Tracker": "https://github.com/NullBulgeOfficial/AVCheck-Python/issues",
+        "Source Code": "https://github.com/NullBulgeOfficial/AVCheck-Python",
+    },
     packages=find_packages(),
     install_requires=[
         "requests",
