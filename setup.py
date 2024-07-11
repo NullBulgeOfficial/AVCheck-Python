@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="avcheck",
-    version="0.1.0",
+    version="0.1.1",
     description="Python library to interact with AvCheck API",
     long_description=long_description,
     long_description_content_type="text/markdown",

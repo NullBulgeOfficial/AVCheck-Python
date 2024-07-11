@@ -1,10 +1,17 @@
 import requests
-from .exceptions import AvCheckException, ApiKeyMissingException, InvalidResponseException, InvalidInputException
+from .exceptions import (
+    AvCheckException,
+    ApiKeyMissingException,
+    InvalidResponseException,
+    InvalidInputException,
+    TaskNotFoundException,
+    EngineNotFoundException
+)
 
 class AvCheckClient:
     def __init__(self, api_key, base_url="http://avcheck.net/vhm/api/v1"):
         if not api_key:
-            raise ApiKeyMissingException("API key is required")
+            raise ApiKeyMissingException()
         self.api_key = api_key
         self.base_url = base_url
 
@@ -36,6 +43,8 @@ class AvCheckClient:
         if crc:
             endpoint += f"{crc}/"
         response = self._post_request(endpoint)
+        if response['status'] == 404:
+            raise TaskNotFoundException(task_id)
         return self._process_task_data(response)
 
     def create_new_task(self, task_type="file", file_path=None, url=None, engines=None, response_type="on_close"):
@@ -131,7 +140,7 @@ class AvCheckClient:
         for engine in service_info.values():
             if engine['short_name'] == engine_name:
                 return engine
-        raise AvCheckException(f"Engine '{engine_name}' not found in service info")
+        raise EngineNotFoundException(engine_name)
 
     def get_engines_by_type(self, service_info, engine_type):
         """Get a list of engines by their type."""
