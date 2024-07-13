@@ -103,8 +103,15 @@ try:
     print(engine_names['longname'])
 except AvCheckException as e:
     print(f"Error: {e}")
+
+# Check if total detections exceed a threshold
+try:
+    total_detections = 5
+    detected = client.is_detected(task_data, total_detections)
+    print(f"Total detections exceed {total_detections}: {detected}")
+except AvCheckException as e:
+    print(f"Error: {e}")
 ```
 
 ## License
 MIT License
-```
