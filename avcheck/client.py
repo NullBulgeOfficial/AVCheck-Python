@@ -156,3 +156,17 @@ class AvCheckClient:
         short_names = [engine['short_name'] for engine in service_info.values()]
         long_names = [engine['full_name'] for engine in service_info.values()]
         return {'shortname': short_names, 'longname': long_names}
+
+    # New Method for Detection Check
+    def is_detected(self, task_data, total_detections):
+        """Check if the total number of detections across all engines is above a given value."""
+        if 'results' not in task_data:
+            raise AvCheckException("Invalid task data: 'results' key not found")
+        
+        detection_count = 0
+        for engine, data in task_data['results'].items():
+            for obj in data['objects'].values():
+                if obj.get('fast_detect', 0) == 1 or obj.get('slow_detect', 0) == 1:
+                    detection_count += 1
+        
+        return detection_count > total_detections
